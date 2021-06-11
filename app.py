@@ -18,4 +18,3 @@ app.add_url_rule('/books/<book_id>', view_func=books.delete, methods=['DELETE'])
 
 
 
-

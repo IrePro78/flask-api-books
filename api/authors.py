@@ -22,7 +22,6 @@ def add():
         'id': author_id
     }), mimetype='application/json', status=201)
 
-
 def delete(author_id):
     connection = get_connection()
     cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
