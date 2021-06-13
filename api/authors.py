@@ -7,19 +7,19 @@ from json import dumps, loads
 def index():
     connection = get_connection()
     cursor = connection.cursor(cursor_factory= extras.RealDictCursor )
-    cursor.execute('SELECT id, first_name, last_name FROM authors')
+    cursor.execute('SELECT id, author_name FROM authors')
     return Response(dumps(cursor.fetchall()), mimetype='application/json')
 
 def add():
     data = loads(request.data.decode('utf-8'))
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute('INSERT INTO authors(first_name,last_name) VALUES(%s, %s) RETURNING id',
-                   (data['first_name'], data['last_name']))
-    author_id = cursor.fetchone()[0]
+    cursor.execute('INSERT INTO books(title, author_id) VALUES(%s, %s) RETURNING id',
+                   (data['title'], data['author_id']))
+    book_id = cursor.fetchone()[0]
     connection.commit()
     return Response(dumps({
-        'id': author_id
+        'id': book_id
     }), mimetype='application/json', status=201)
 
 def delete(author_id):
