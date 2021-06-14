@@ -9,8 +9,8 @@ def index():
     cursor = connection.cursor(cursor_factory= extras.RealDictCursor )
     cursor.execute(
         'SELECT books.id, books.title,'
-        ' authors.author_name from authors'
-        ' right join books on authors.id >= 1')
+        'authors.author_name FROM books inner JOIN authors ON books.author_id = authors.id')
+
 
     return Response(dumps(cursor.fetchall()), mimetype='application/json')
 
@@ -31,8 +31,8 @@ def delete(book_id):
     connection = get_connection()
     cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
     cursor.execute('SELECT id, title, author_id FROM books WHERE id=%s', (book_id))
-    author = cursor.fetchone()
-    if author is None:
+    book = cursor.fetchone()
+    if book is None:
         abort(404)
     cursor.execute('DELETE FROM books WHERE id=%s', (book_id))
     connection.commit()
