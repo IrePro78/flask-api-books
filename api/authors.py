@@ -15,19 +15,18 @@ def add_author():
     data = loads(request.data.decode('utf-8'))
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute('INSERT INTO authors(author_name) VALUES(%s) RETURNING id', data['author_name'])
+    cursor.execute('INSERT INTO authors VALUES(%s) RETURNING id', (data['author_name']))
     author_id = cursor.fetchone()[0]
     connection.commit()
     return Response(dumps({
         'id': author_id
-
     }), mimetype='application/json', status=201)
 
 
 def delete_author(author_id):
     connection = get_connection()
     cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
-    cursor.execute('SELECT id, first_name, last_name FROM authors WHERE id=%s', (author_id))
+    cursor.execute('SELECT id, author_name FROM authors WHERE id=%s', (author_id))
     author = cursor.fetchone()
     if author is None:
         abort(404)
