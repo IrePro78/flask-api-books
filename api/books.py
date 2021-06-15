@@ -11,7 +11,6 @@ def index_books():
         'SELECT books.id, books.title,'
         'authors.author_name FROM books '
         'inner JOIN authors ON books.author_id = authors.id')
-
     return Response(dumps(cursor.fetchall()), mimetype='application/json')
 
 def add_book():

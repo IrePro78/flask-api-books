@@ -1,0 +1,89 @@
+#tworzenie tabeli autorzy
+CREATE TABLE authors (
+	id serial PRIMARY KEY,
+	first_name varchar(255),
+	last_name varchar(255)
+);
+
+#tworzenie autora
+
+CREATE TABLE authors (
+	id serial PRIMARY KEY,
+	author_name varchar(255)
+);
+
+#resetowanie id
+
+TRUNCATE TABLE authors RESTART IDENTITY CASCADE;
+
+
+#tworzenie tabeli książki
+
+CREATE TABLE books (
+	id serial PRIMARY KEY,
+	author_id integer NOT NULL,
+	title varchar(255)
+);
+
+
+
+#usuwanie tabeli
+
+drop table authors;
+
+
+
+select * from books;   # wyswietlenie books
+
+SELECT * FROM authors;  # wyświetlenie authors
+
+
+SELECT title, author_name FROM books, authors;
+
+SELECT books.id, books.title, authors.author_name FROM books LEFT OUTER JOIN authors ON books.author_id = authors.id;
+
+
+
+
+
+
+select * from books as b
+left outer join authors as a on b.id = b.author_id;
+
+
+
+
+insert into books(title, author_id) VALUES
+									('Pan Tadeusz', 1),
+									('Kordian', 2),
+									('Nie-Boska komedia', 3),
+									('Zemsta', 4),
+									('Król Zamczyska', 5);
+
+
+insert into books(title, author_id) VALUES("Kordian", 2);
+insert into books(title, author_id) VALUES("Nie-Boska komedia", 3);
+insert into books(title, author_id) VALUES("Zemsta", 4);
+insert into books(title, author_id) VALUES("Król Zamczyska", 5);
+
+INSERT INTO authors(author_name)
+VALUES
+	('Adam Mickiewicz'),
+	('Juliusz Śłowacki'),
+	('Zygmunt Krasiński'),
+	('Aleksander Fredro'),
+	('Seweryn Goszczyński');
+
+insert into authors(author_name) VALUES("Juliusz Śłowacki");
+insert into authors(author_name) VALUES("Zygmunt Krasiński");
+insert into authors(author_name) VALUES("Aleksander Fredro");
+insert into authors(author_name) VALUES("Seweryn Goszczyński");
+
+
+
+
+
+
+
+
+
