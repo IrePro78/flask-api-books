@@ -4,27 +4,27 @@ from db import get_connection
 from json import dumps, loads
 
 
-def index():
+def index_authors():
     connection = get_connection()
     cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
     cursor.execute('SELECT id, author_name FROM authors')
     return Response(dumps(cursor.fetchall()), mimetype='application/json')
 
 
-def add():
+def add_author():
     data = loads(request.data.decode('utf-8'))
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute('INSERT INTO books(title, author_id) VALUES(%s, %s) RETURNING `id`',
-                   (data['title'], data['author_id']))
-    book_id = cursor.fetchone()[0]
+    cursor.execute('INSERT INTO authors(author_name) VALUES(%s) RETURNING `id`',
+                   (data['author_name']))
+    author_id = cursor.fetchone()[0]
     connection.commit()
     return Response(dumps({
-        'id': book_id
+        'id': author_id
     }), mimetype='application/json', status=201)
 
 
-def delete(author_id):
+def delete_author(author_id):
     connection = get_connection()
     cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
     cursor.execute('SELECT id, first_name, last_name FROM authors WHERE id=%s', (author_id))

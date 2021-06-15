@@ -4,17 +4,17 @@ from db import get_connection
 from json import dumps, loads
 
 
-def index():
+def index_books():
     connection = get_connection()
-    cursor = connection.cursor(cursor_factory= extras.RealDictCursor )
+    cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
     cursor.execute(
         'SELECT books.id, books.title,'
-        'authors.author_name FROM books inner JOIN authors ON books.author_id = authors.id')
-
+        'authors.author_name FROM books '
+        'inner JOIN authors ON books.author_id = authors.id')
 
     return Response(dumps(cursor.fetchall()), mimetype='application/json')
 
-def add():
+def add_book():
     data = loads(request.data.decode('utf-8'))
     connection = get_connection()
     cursor = connection.cursor()
@@ -27,7 +27,7 @@ def add():
     }), mimetype='application/json', status=201)
 
 
-def delete(book_id):
+def delete_book(book_id):
     connection = get_connection()
     cursor = connection.cursor(cursor_factory=extras.RealDictCursor)
     cursor.execute('SELECT id, title, author_id FROM books WHERE id=%s', (book_id))
