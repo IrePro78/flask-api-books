@@ -15,12 +15,13 @@ def add_author():
     data = loads(request.data.decode('utf-8'))
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute('INSERT INTO authors(author_name) VALUES(%s) RETURNING id',
-                   (data['author_name']))
-    author_id = cursor.fetchone()[0]
+    cursor.execute('INSERT INTO authors(author_name) VALUES(%s) RETURNING *',
+                  (data['author_name'],))
+    author_id, author_name = cursor.fetchone()
     connection.commit()
     return Response(dumps({
-        'id': author_id
+        'id': author_id,
+        'author': author_name
     }), mimetype='application/json', status=201)
 
 
